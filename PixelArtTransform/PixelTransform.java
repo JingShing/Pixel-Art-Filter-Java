@@ -45,18 +45,30 @@ public class PixelTransform{
         Mat img_cp = imgMat.reshape(1, d_h * d_w);
         img_cp.convertTo(img_cp, CvType.CV_32F);
         TermCriteria criteria = new TermCriteria(TermCriteria.EPS + TermCriteria.MAX_ITER, 10, 1.0);
-        // Mat label = new Mat();
-        Mat label = new Mat(img_cp.rows(), 1, CvType.CV_32SC1);
+        Mat label = new Mat();
         Mat center = new Mat();
         Core.kmeans(img_cp, k, label, criteria, 10, Core.KMEANS_PP_CENTERS, center);
+        center.convertTo(center, CvType.CV_8U);
+    
+        // Use LUT to map the original image to the k-means clustered colors
         Mat result = new Mat();
-        MatOfInt centerInt = new MatOfInt();
-        center.convertTo(centerInt, CvType.CV_8U);
-        Core.LUT(imgMat.reshape(1, d_h * d_w), centerInt, result);
-        // Core.LUT(img_cp, center, result);
-        // Core.LUT(imgMat.reshape(1, d_h * d_w), center, result); // hava some trouble with LUT function
-        // result = imgMat.reshape(1, d_h * d_w);
+        Mat img_reshape = imgMat.reshape(1, d_h * d_w);
+        img_reshape.convertTo(img_reshape, CvType.CV_8U);
+        center.convertTo(center, CvType.CV_8U);
+        Mat centerNormal = new Mat();
+        Mat imgNormal = new Mat();
+        Core.normalize(center, center, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
+        Core.normalize(img_reshape, img_reshape, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
+        Core.LUT(img_reshape, center, result);
+        
+        // Mat lut = new Mat(256, 1, CvType.CV_8U);
+        // for (int i = 0; i < 256; i++) {
+        //     lut.put(i, 0, i);
+        // }
+        // Core.LUT(img_reshape, lut, result);
+ 
         result = result.reshape(3, d_h);
+    
         Imgproc.resize(result, result, new org.opencv.core.Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
     
         return matToBufferedImage(result);
