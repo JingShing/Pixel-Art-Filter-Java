@@ -1,13 +1,24 @@
 package pixel.filter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.TermCriteria;
+import org.opencv.core.Size;
+import org.opencv.core.Range;
+
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
 import java.awt.image.DataBufferByte;
 
 import java.io.File;
@@ -18,6 +29,7 @@ public class PixelTransform{
     public static void main(String[] args) {
         saveImg(transform("image/or.jpg", 3, 1, 0), "test.png");
     }
+
     public static void saveImg(BufferedImage image, String fileName) {
         try {
             File outputfile = new File(fileName);
@@ -26,58 +38,70 @@ public class PixelTransform{
             e.printStackTrace();
         }
     }
+
     public static BufferedImage transform(String src, int k, double scale, int blur) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
-        BufferedImage img = matToBufferedImage(imgMat);
-    
         Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
-        int h = img.getHeight();
-        int w = img.getWidth();
-        int c = 3;
-        int d_h = (int) Math.round(h / scale);
-        int d_w = (int) Math.round(w / scale);
+    
         if (blur > 0) {
             Imgproc.bilateralFilter(imgMat, imgMat, 15, blur, 20);
         }
     
-        Imgproc.resize(imgMat, imgMat, new org.opencv.core.Size(d_w, d_h), 0, 0, Imgproc.INTER_NEAREST);
-        Mat img_cp = imgMat.reshape(1, d_h * d_w);
-        img_cp.convertTo(img_cp, CvType.CV_32F);
-        TermCriteria criteria = new TermCriteria(TermCriteria.EPS + TermCriteria.MAX_ITER, 10, 1.0);
-        Mat label = new Mat();
-        Mat center = new Mat();
-        Core.kmeans(img_cp, k, label, criteria, 10, Core.KMEANS_PP_CENTERS, center);
-        center.convertTo(center, CvType.CV_8U);
+        int h = imgMat.height();
+        int w = imgMat.width();
+        int c = imgMat.channels();
+        int d_h = (int) Math.round(h / scale);
+        int d_w = (int) Math.round(w / scale);
     
-        // Use LUT to map the original image to the k-means clustered colors
-        // Mat result = new Mat();
-        Mat result = new Mat();
-        Mat img_reshape = imgMat.reshape(1, d_h * d_w);
-        center.convertTo(center, CvType.CV_8U);
-        Core.normalize(center, center, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
-
-        System.out.println(center.toString());
-        System.out.println(center.isContinuous());
-        System.out.println(center.channels());
-        System.out.println(center.total());
-        System.out.println("");
-        System.out.println(img_reshape.channels());
-        System.out.println(img_reshape.total());
-        System.out.println("");
-        System.out.println(result.channels());
-        System.out.println(result.total());
+        Mat resizedMat = new Mat();
+        Imgproc.resize(imgMat, resizedMat, new Size(d_w, d_h), 0, 0, Imgproc.INTER_NEAREST);    
         
-        Mat repeatedMat = new Mat(1, 256, CvType.CV_8UC1);
-        Core.repeat(center, 1, 256/3, repeatedMat);
-        Core.LUT(img_reshape, center, result);
-
-        result = img_reshape;
-        result = result.reshape(3, d_h);
-        Imgproc.resize(result, result, new org.opencv.core.Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
+        Mat result = cluster(resizedMat, k).get(0);
+        // result = result.reshape(3, d_h);
+        Imgproc.resize(result, result, new Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
     
         return matToBufferedImage(result);
     }
+    public static List<Mat> cluster(Mat cutout, int k) {
+		Mat samples = cutout.reshape(1, cutout.cols() * cutout.rows());
+		Mat samples32f = new Mat();
+		samples.convertTo(samples32f, CvType.CV_32F, 1.0 / 255.0);
+		
+		Mat labels = new Mat();
+		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT, 100, 1);
+		Mat centers = new Mat();
+		Core.kmeans(samples32f, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centers);		
+		return showClusters(cutout, labels, centers);
+	}
+
+	private static List<Mat> showClusters (Mat cutout, Mat labels, Mat centers) {
+		centers.convertTo(centers, CvType.CV_8UC1, 255.0);
+		centers.reshape(3);
+		
+		List<Mat> clusters = new ArrayList<Mat>();
+		for(int i = 0; i < centers.rows(); i++) {
+			clusters.add(Mat.zeros(cutout.size(), cutout.type()));
+		}
+		
+		Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
+		for(int i = 0; i < centers.rows(); i++) counts.put(i, 0);
+		
+		int rows = 0;
+		for(int y = 0; y < cutout.rows(); y++) {
+			for(int x = 0; x < cutout.cols(); x++) {
+				int label = (int)labels.get(rows, 0)[0];
+				int r = (int)centers.get(label, 2)[0];
+				int g = (int)centers.get(label, 1)[0];
+				int b = (int)centers.get(label, 0)[0];
+				counts.put(label, counts.get(label) + 1);
+				clusters.get(label).put(y, x, b, g, r);
+				rows++;
+			}
+		}
+		System.out.println(counts);
+		return clusters;
+	}
     
     private static BufferedImage matToBufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
