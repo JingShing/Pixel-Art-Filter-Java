@@ -7,8 +7,24 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class PixelTransform{
+    public static void main(String[] args) {
+        saveImg(transform("image/or.jpg", 3, 1, 0), "test.png");
+    }
+    public static void saveImg(BufferedImage image, String fileName) {
+        try {
+            File outputfile = new File(fileName);
+            ImageIO.write(image, "png", outputfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static BufferedImage transform(String src, int k, double scale, int blur) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
