@@ -42,7 +42,8 @@ public class PixelTransform{
     public static BufferedImage transform(String src, int k, double scale, int blur) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
-        Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
+        // Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
+        // Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2BGR);
     
         if (blur > 0) {
             Imgproc.bilateralFilter(imgMat, imgMat, 15, blur, 20);
@@ -60,6 +61,7 @@ public class PixelTransform{
         Mat result = cluster(resizedMat, k).get(0);
         // result = result.reshape(3, d_h);
         Imgproc.resize(result, result, new Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
+        // Imgproc.cvtColor(result, result, Imgproc.COLOR_BGR2RGB);
     
         return matToBufferedImage(result);
     }
@@ -71,7 +73,7 @@ public class PixelTransform{
 		Mat labels = new Mat();
 		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT, 100, 1);
 		Mat centers = new Mat();
-		Core.kmeans(samples32f, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centers);		
+		Core.kmeans(samples32f, k, labels, criteria, 10, Core.KMEANS_PP_CENTERS, centers);		
 		return showClusters(cutout, labels, centers);
 	}
 
@@ -96,6 +98,7 @@ public class PixelTransform{
 				int b = (int)centers.get(label, 0)[0];
 				counts.put(label, counts.get(label) + 1);
 				clusters.get(label).put(y, x, b, g, r);
+				// clusters.get(label).put(y, x, g, b, r);
 				rows++;
 			}
 		}
