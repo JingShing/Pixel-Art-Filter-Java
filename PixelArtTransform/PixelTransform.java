@@ -51,24 +51,29 @@ public class PixelTransform{
         center.convertTo(center, CvType.CV_8U);
     
         // Use LUT to map the original image to the k-means clustered colors
+        // Mat result = new Mat();
         Mat result = new Mat();
         Mat img_reshape = imgMat.reshape(1, d_h * d_w);
-        img_reshape.convertTo(img_reshape, CvType.CV_8U);
         center.convertTo(center, CvType.CV_8U);
-        Mat centerNormal = new Mat();
-        Mat imgNormal = new Mat();
         Core.normalize(center, center, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
-        Core.normalize(img_reshape, img_reshape, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
-        Core.LUT(img_reshape, center, result);
+
+        System.out.println(center.toString());
+        System.out.println(center.isContinuous());
+        System.out.println(center.channels());
+        System.out.println(center.total());
+        System.out.println("");
+        System.out.println(img_reshape.channels());
+        System.out.println(img_reshape.total());
+        System.out.println("");
+        System.out.println(result.channels());
+        System.out.println(result.total());
         
-        // Mat lut = new Mat(256, 1, CvType.CV_8U);
-        // for (int i = 0; i < 256; i++) {
-        //     lut.put(i, 0, i);
-        // }
-        // Core.LUT(img_reshape, lut, result);
- 
+        Mat repeatedMat = new Mat(1, 256, CvType.CV_8UC1);
+        Core.repeat(center, 1, 256/3, repeatedMat);
+        Core.LUT(img_reshape, center, result);
+
+        result = img_reshape;
         result = result.reshape(3, d_h);
-    
         Imgproc.resize(result, result, new org.opencv.core.Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
     
         return matToBufferedImage(result);
