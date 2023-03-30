@@ -2,6 +2,7 @@ package pixel.filter;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.TermCriteria;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -44,12 +45,17 @@ public class PixelTransform{
         Mat img_cp = imgMat.reshape(1, d_h * d_w);
         img_cp.convertTo(img_cp, CvType.CV_32F);
         TermCriteria criteria = new TermCriteria(TermCriteria.EPS + TermCriteria.MAX_ITER, 10, 1.0);
-        Mat label = new Mat();
+        // Mat label = new Mat();
+        Mat label = new Mat(img_cp.rows(), 1, CvType.CV_32SC1);
         Mat center = new Mat();
         Core.kmeans(img_cp, k, label, criteria, 10, Core.KMEANS_PP_CENTERS, center);
-        center.convertTo(center, CvType.CV_8UC1);
         Mat result = new Mat();
-        Core.LUT(imgMat.reshape(1, d_h * d_w), center, result);
+        MatOfInt centerInt = new MatOfInt();
+        center.convertTo(centerInt, CvType.CV_8U);
+        Core.LUT(imgMat.reshape(1, d_h * d_w), centerInt, result);
+        // Core.LUT(img_cp, center, result);
+        // Core.LUT(imgMat.reshape(1, d_h * d_w), center, result); // hava some trouble with LUT function
+        // result = imgMat.reshape(1, d_h * d_w);
         result = result.reshape(3, d_h);
         Imgproc.resize(result, result, new org.opencv.core.Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
     
