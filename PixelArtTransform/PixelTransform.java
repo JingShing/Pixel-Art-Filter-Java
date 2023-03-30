@@ -42,8 +42,6 @@ public class PixelTransform{
     public static BufferedImage transform(String src, int k, double scale, int blur) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
-        // Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2RGB);
-        // Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2BGR);
     
         if (blur > 0) {
             Imgproc.bilateralFilter(imgMat, imgMat, 15, blur, 20);
@@ -59,9 +57,6 @@ public class PixelTransform{
         Imgproc.resize(imgMat, resizedMat, new Size(d_w, d_h), 0, 0, Imgproc.INTER_NEAREST);    
         
         Mat result = cluster(resizedMat, k).get(0);
-        // result = result.reshape(3, d_h);
-        Imgproc.resize(result, result, new Size(d_w * scale, d_h * scale), 0, 0, Imgproc.INTER_NEAREST);
-        // Imgproc.cvtColor(result, result, Imgproc.COLOR_BGR2RGB);
     
         return matToBufferedImage(result);
     }
@@ -73,12 +68,9 @@ public class PixelTransform{
 		Mat labels = new Mat();
 		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT, 100, 1);
 		Mat centers = new Mat();
-		Core.kmeans(samples32f, k, labels, criteria, 10, Core.KMEANS_PP_CENTERS, centers);		
-		return showClusters(cutout, labels, centers);
-	}
-
-	private static List<Mat> showClusters (Mat cutout, Mat labels, Mat centers) {
-		centers.convertTo(centers, CvType.CV_8UC1, 255.0);
+		Core.kmeans(samples32f, k, labels, criteria, 10, Core.KMEANS_PP_CENTERS, centers);
+        
+        centers.convertTo(centers, CvType.CV_8UC1, 255.0);
 		centers.reshape(3);
 		
 		List<Mat> clusters = new ArrayList<Mat>();
@@ -97,12 +89,10 @@ public class PixelTransform{
 				int g = (int)centers.get(label, 1)[0];
 				int b = (int)centers.get(label, 0)[0];
 				counts.put(label, counts.get(label) + 1);
-				clusters.get(label).put(y, x, b, g, r);
-				// clusters.get(label).put(y, x, g, b, r);
+				clusters.get(0).put(y, x, b, g, r);
 				rows++;
 			}
 		}
-		System.out.println(counts);
 		return clusters;
 	}
     
