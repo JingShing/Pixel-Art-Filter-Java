@@ -8,8 +8,6 @@ import java.util.Map;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfInt;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.TermCriteria;
 import org.opencv.core.Size;
 import org.opencv.core.Range;
@@ -18,7 +16,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ByteLookupTable;
 import java.awt.image.DataBufferByte;
 
 import java.io.File;
