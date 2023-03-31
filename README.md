@@ -1,3 +1,4 @@
+English | [繁體中文](README_TCH.md)
 # Pixel-Art-Filter-Java
 Pixel Art filter made with Java
 
