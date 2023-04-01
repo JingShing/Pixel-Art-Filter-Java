@@ -29,7 +29,13 @@ public class PixelTransform{
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please input the file path: ");
         String filePath = scan.next();
-        saveImg(transform(filePath, 3, 1, 0), "test.png");
+        System.out.printf("Please input the number color: ");
+        int colorNumber = scan.nextInt();
+        System.out.printf("Please input the scale: ");
+        Double scale = scan.nextDouble();
+        System.out.printf("Please input the blur: ");
+        int blur = scan.nextInt();
+        saveImg(transform(filePath, colorNumber, scale, blur), "test.png");
     }
 
     public static void saveImg(BufferedImage image, String fileName) {
