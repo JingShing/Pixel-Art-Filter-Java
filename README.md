@@ -7,7 +7,7 @@ This project is using [Python Pixel Art Filter Tool](https://github.com/JingShin
 Still working on...
 
 ## Envirorment
-I don't use any of IDE or project. So I will give a method of how to use opencv with javac in cmd and local envirorment.
+I don't use any of IDE or project set. So I will give a method of how to use opencv with javac in cmd and local envirorment.
 
 Before we started. It will need to go to [Opencv Files](https://sourceforge.net/projects/opencvlibrary/files/) download the newest. You will get  ```.exe``` compressed file. Activate it to get a file.
 
