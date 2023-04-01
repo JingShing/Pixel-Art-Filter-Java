@@ -11,7 +11,7 @@
 
 在開始前，建議到 [Opencv Files](https://sourceforge.net/projects/opencvlibrary/files/) 選擇喜歡的版本下載。下載後會得到 ```.exe``` 的壓縮檔。啟動後解壓縮。
 
-解壓縮後會得到一個名稱為 ```opencv``` 的資料夾。開啟以下路徑 ```opencv\opencv\build\java``` 可以得到一個已經編譯好的 ```opencv-版本號.jar``` 的 opencv 庫。將此放入到放置 ```PixelTransform.java``` 的資料夾中。除此之外還有兩個 ```x64``` 和 ```x86``` 的資料夾。裡面裝有執行時所需的 ```.dll``` 檔。請依據系統放置其一到放置 ```PixelTransform.java``` 的資料夾中。
+解壓縮後會得到一個名稱為 ```opencv``` 的資料夾。開啟以下路徑 ```opencv\opencv\build\java``` 可以得到一個已經編譯好的 ```opencv-版本號.jar``` 的 opencv 庫。將此放入到放置本專案 ```PixelTransform.java``` 的同層資料夾中。除此之外還有兩個 ```x64``` 和 ```x86``` 的資料夾。裡面裝有執行時所需的 ```.dll``` 檔。請依據系統放置其一到放置 ```PixelTransform.java``` 的資料夾中。
 
 將 Opencv 的部分弄完後。
 
