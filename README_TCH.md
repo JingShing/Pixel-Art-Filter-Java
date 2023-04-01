@@ -1,8 +1,8 @@
 [English](README.md) | 繁體中文
 # 像素濾鏡工具 Java 版
-透過 Java 製作像素濾鏡工具
+透過 Java 製作像素濾鏡工具。
 
-本專案
+本專案透過 [Python 像素濾鏡工具](https://github.com/JingShing-Tools/Pixel-Art-transform-in-python) 作為參考專案。以此延伸用 Java 編寫此專案。
 
 仍在開發...
 
