@@ -15,9 +15,9 @@
 
 將 Opencv 的部分弄完後。
 
-開啟 CMD 並透過 CD 指令讀取到放置 ```PixelTransform.java``` 的資料夾。輸入 ```javac -d . -classpath .;opencv-460.jar PixelTransform.java``` 即可編譯好 ```.class``` 檔。
+開啟 CMD 並透過 CD 指令讀取到放置 ```PixelTransform.java``` 的資料夾。輸入 ```javac -d . -classpath .;opencv-版本號.jar PixelTransform.java``` 即可編譯好 ```.class``` 檔。
 
-執行則需輸入 ```java -classpath .;opencv-460.jar pixel.filter.PixelTransform```
+執行則需輸入 ```java -classpath .;opencv-版本號.jar pixel.filter.PixelTransform```
 
 ## 版本
 ### Ver 0.1
