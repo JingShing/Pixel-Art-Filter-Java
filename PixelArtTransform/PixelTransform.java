@@ -11,6 +11,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.TermCriteria;
 import org.opencv.core.Size;
 import org.opencv.core.Range;
+// for erode
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -36,11 +39,14 @@ public class PixelTransform{
         // scale - double
         System.out.printf("Please input the scale: ");
         Double scale = scan.nextDouble();
-        // scale - int
+        // blur - int
         System.out.printf("Please input the blur: ");
         int blur = scan.nextInt();
+        // erode - int
+        System.out.printf("Please input the erode: ");
+        int erode = scan.nextInt();
 
-        saveImg(transform(filePath, colorNumber, scale, blur), "test.png");
+        saveImg(transform(filePath, colorNumber, scale, blur, erode), "test.png");
     }
 
     public static void saveImg(BufferedImage image, String fileName) {
@@ -63,12 +69,15 @@ public class PixelTransform{
         return img;
     }
 
-    public static BufferedImage transform(String src, int k, double scale, int blur) {
+    public static BufferedImage transform(String src, int k, double scale, int blur, int erode) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
     
         if (blur > 0) {
-            Imgproc.bilateralFilter(imgMat, imgMat, 15, blur, 20);
+            // image blur
+            Mat outBlur = new Mat();
+            Imgproc.bilateralFilter(imgMat, outBlur, 15, blur, 20);
+            imgMat = outBlur;
         }
     
         int h = imgMat.height();
@@ -78,14 +87,38 @@ public class PixelTransform{
         int d_w = (int) Math.round(w / scale);
     
         Mat resizedMat = new Mat();
+        // scale part
         Imgproc.resize(imgMat, resizedMat, new Size(d_w, d_h), 0, 0, Imgproc.INTER_NEAREST);    
-        
-        Mat result = cluster(resizedMat, k).get(0);
+        resizedMat = erode(resizedMat, erode);
+        resizedMat = cluster(resizedMat, k).get(0);
+        Mat result = new Mat();
+        Imgproc.resize(resizedMat, result, new Size(w, h), 0, 0, Imgproc.INTER_NEAREST);            
     
         return matToBufferedImage(result);
     }
+    public static Mat erode(Mat image, int erode){
+        // recommend erode is 1, 2
+        Mat n8 = new Mat(3, 3, CvType.CV_8UC1);
+        n8.setTo(new Scalar(1));
+
+        Mat n4 = new Mat(3, 3, CvType.CV_8UC1);
+        n4.put(0, 1, 0, 1, 1, 1, 0, 1, 0);
+
+        Mat outPut = new Mat();
+        if (erode == 1) {
+            // Imgproc.erode(Mat src, Mat dst, Mat kernel, Point anchor, int iterations, int borderType, Scalar borderValue);
+            Imgproc.erode(image, outPut, n4, new Point(-1, -1), 1);
+            return outPut;
+        }
+        else if (erode == 2) {
+            Imgproc.erode(image, outPut, n8, new Point(-1, -1), 1);
+            return outPut;
+        }
+        else return image;
+    }
     public static List<Mat> cluster(Mat cutout, int k) {
         // for k-means
+        // color number
 		Mat samples = cutout.reshape(1, cutout.cols() * cutout.rows());
 		Mat samples32f = new Mat();
 		samples.convertTo(samples32f, CvType.CV_32F, 1.0 / 255.0);
