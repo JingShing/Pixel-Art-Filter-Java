@@ -17,3 +17,9 @@
 
 執行則需輸入 ```java -classpath .;opencv-460.jar pixel.filter.PixelTransform```
 
+## 版本
+### Ver 0.1
+* 成功透過 Python 代碼重構成 Java 的 Opencv 調用。
+* 功能實現:
+  * 顆粒大小  
+  * 顏色數量
