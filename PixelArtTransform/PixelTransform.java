@@ -26,15 +26,20 @@ import java.util.Scanner;
 
 public class PixelTransform{
     public static void main(String[] args) {
+        // file path - string
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please input the file path: ");
+        // color number(K) - int
         String filePath = scan.next();
         System.out.printf("Please input the number color: ");
         int colorNumber = scan.nextInt();
+        // scale - double
         System.out.printf("Please input the scale: ");
         Double scale = scan.nextDouble();
+        // scale - int
         System.out.printf("Please input the blur: ");
         int blur = scan.nextInt();
+
         saveImg(transform(filePath, colorNumber, scale, blur), "test.png");
     }
 
@@ -45,6 +50,17 @@ public class PixelTransform{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static BufferedImage matToBufferedImage(Mat mat) {
+        // from Mat format to image format that can be used in ImageIO
+        int type = BufferedImage.TYPE_BYTE_GRAY;
+        if (mat.channels() > 1) {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+        BufferedImage img = new BufferedImage(mat.cols(), mat.rows(), type);
+        mat.get(0, 0, ((DataBufferByte) img.getRaster().getDataBuffer()).getData());
+        return img;
     }
 
     public static BufferedImage transform(String src, int k, double scale, int blur) {
@@ -69,6 +85,7 @@ public class PixelTransform{
         return matToBufferedImage(result);
     }
     public static List<Mat> cluster(Mat cutout, int k) {
+        // for k-means
 		Mat samples = cutout.reshape(1, cutout.cols() * cutout.rows());
 		Mat samples32f = new Mat();
 		samples.convertTo(samples32f, CvType.CV_32F, 1.0 / 255.0);
@@ -103,14 +120,4 @@ public class PixelTransform{
 		}
 		return clusters;
 	}
-    
-    private static BufferedImage matToBufferedImage(Mat mat) {
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        if (mat.channels() > 1) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        BufferedImage img = new BufferedImage(mat.cols(), mat.rows(), type);
-        mat.get(0, 0, ((DataBufferByte) img.getRaster().getDataBuffer()).getData());
-        return img;
-    }
 }    
