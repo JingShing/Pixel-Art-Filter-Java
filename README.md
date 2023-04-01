@@ -25,6 +25,6 @@ And if you want to run the compiled class please enter this command: ```java -cl
   * Color number
 ### Ver 0.2
 * Feature:
-  * custom input
+  * Custom input
   * Outline(erode)
   * Blur(bilateralFilter)
