@@ -23,3 +23,7 @@ And if you want to run the compiled class please enter this command: ```java -cl
 * Feature:
   * Pixel Size 
   * Color number
+### Ver 0.2
+* Feature:
+  * custom input
+  * Outline(erode)
