@@ -22,9 +22,14 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
+import java.util.Scanner;
+
 public class PixelTransform{
     public static void main(String[] args) {
-        saveImg(transform("image/or.jpg", 3, 1, 0), "test.png");
+        Scanner scan = new Scanner(System.in);
+        System.out.printf("Please input the file path: ");
+        String filePath = scan.next();
+        saveImg(transform(filePath, 3, 1, 0), "test.png");
     }
 
     public static void saveImg(BufferedImage image, String fileName) {
