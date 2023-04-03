@@ -28,3 +28,7 @@ And if you want to run the compiled class please enter this command: ```java -cl
   * Custom input
   * Outline(erode)
   * Blur(bilateralFilter)
+### Ver 0.3
+* Feature:
+  * Contrast
+  * Saturation
