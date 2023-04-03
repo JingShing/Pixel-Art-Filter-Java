@@ -45,8 +45,14 @@ public class PixelTransform{
         // erode - int
         System.out.printf("Please input the erode: ");
         int erode = scan.nextInt();
-
-        saveImg(transform(filePath, colorNumber, scale, blur, erode), "test.png");
+        // contrast - int
+        System.out.printf("Please input the contrast: ");
+        int contrast = scan.nextInt();
+        // saturation - int
+        System.out.printf("Please input the saturation: ");
+        int saturation = scan.nextInt();
+        
+        saveImg(transform(filePath, colorNumber, scale, blur, erode, contrast, saturation), "test.png");
     }
 
     public static void saveImg(BufferedImage image, String fileName) {
@@ -69,7 +75,7 @@ public class PixelTransform{
         return img;
     }
 
-    public static BufferedImage transform(String src, int k, double scale, int blur, int erode) {
+    public static BufferedImage transform(String src, int k, double scale, int blur, int erode, int contrast, int saturation) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat imgMat = Imgcodecs.imread(src);
     
@@ -78,6 +84,14 @@ public class PixelTransform{
             Mat outBlur = new Mat();
             Imgproc.bilateralFilter(imgMat, outBlur, 15, blur, 20);
             imgMat = outBlur;
+        }
+        if (contrast != 0){
+            // contrast
+            imgMat = contrast_and_brightness(imgMat, 0, contrast);
+        }
+        if (saturation != 0){
+            // saturation
+            imgMat = saturation(imgMat, saturation);
         }
     
         int h = imgMat.height();
@@ -89,7 +103,9 @@ public class PixelTransform{
         Mat resizedMat = new Mat();
         // scale part
         Imgproc.resize(imgMat, resizedMat, new Size(d_w, d_h), 0, 0, Imgproc.INTER_NEAREST);    
+        // erode
         resizedMat = erode(resizedMat, erode);
+        // k-color
         resizedMat = cluster(resizedMat, k).get(0);
         Mat result = new Mat();
         Imgproc.resize(resizedMat, result, new Size(w, h), 0, 0, Imgproc.INTER_NEAREST);            
@@ -153,4 +169,25 @@ public class PixelTransform{
 		}
 		return clusters;
 	}
+
+    public static Mat contrast_and_brightness(Mat img, int brightness, int contrast) {
+        double B = brightness / 255.0;
+        double c = contrast / 255.0;
+        double k = Math.tan((45 + 44 * c) / 180 * Math.PI);
+    
+        img.convertTo(img, CvType.CV_32F);
+        Core.subtract(img, new Mat(img.size(), img.type(), new org.opencv.core.Scalar(127.5 * (1 - B))), img);
+        Core.multiply(img, new Mat(img.size(), img.type(), new org.opencv.core.Scalar(k)), img);
+        Core.add(img, new Mat(img.size(), img.type(), new org.opencv.core.Scalar(127.5 * (1 + B))), img);
+        
+        Core.normalize(img, img, 0, 255, Core.NORM_MINMAX, CvType.CV_8U);
+        
+        return img;
+    }
+    public static Mat saturation(Mat img, int saturation) {
+        Mat saturated = new Mat();
+        double scale = 1;
+        img.convertTo(saturated, CvType.CV_8UC1, scale, saturation); 
+        return saturated;
+    }
 }    
