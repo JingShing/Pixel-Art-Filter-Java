@@ -18,6 +18,7 @@ Activate CMD and using CD load to the folder of ```PixelTransform.java```. Enter
 
 And if you want to run the compiled class please enter this command: ```java -classpath .;opencv-version.jar pixel.filter.PixelTransform```
 
+---
 ### After ver 0.3
 I started use eclipse and maven as my IDE and project manager.
 
