@@ -1,4 +1,4 @@
-package pixel.filter;
+package idv.jingshing.pixel.fileter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,6 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.TermCriteria;
 import org.opencv.core.Size;
-import org.opencv.core.Range;
 // for erode
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
