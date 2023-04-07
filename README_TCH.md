@@ -7,6 +7,7 @@
 仍在開發...
 
 ## 環境
+### 在 ver 0.3 之前
 我沒有使用任何 IDE 和 Java 專案管理工具。底下會說明如何使用 javac 和 cmd 在本地環境運行代碼。
 
 在開始前，建議到 [Opencv Files](https://sourceforge.net/projects/opencvlibrary/files/) 選擇喜歡的版本下載。下載後會得到 ```.exe``` 的壓縮檔。啟動後解壓縮。
@@ -18,6 +19,14 @@
 開啟 CMD 並透過 CD 指令讀取到放置 ```PixelTransform.java``` 的資料夾。輸入 ```javac -d . -classpath .;opencv-版本號.jar PixelTransform.java``` 即可編譯好 ```.class``` 檔。
 
 執行則需輸入 ```java -classpath .;opencv-版本號.jar pixel.filter.PixelTransform```
+
+---
+### 在版本 0.3 之後
+我開始使用 eclipse 作為我的 IDE 和 maven 作為我的專案管理工具。
+
+這是我第一次使用它們，所以我在作業的途中有作筆記。
+
+可以在 ```note/note.md``` 查看。裡頭記載了這個專案我所遇到的問題。
 
 ## 版本
 ### Ver 0.1
