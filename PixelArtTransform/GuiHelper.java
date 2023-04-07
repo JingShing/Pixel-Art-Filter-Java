@@ -22,7 +22,7 @@ public class GuiHelper{
 		//	JmainMenu = a GUI window
 		mainMenu.setTitle("PixelFilter");
 		mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit out of application
-		mainMenu.setResizable(false);// keep window from resized
+//		mainMenu.setResizable(false);// keep window from resized
 		mainMenu.setSize(500, 500); // set the x and y dimension
 		
 		// set icon
@@ -50,7 +50,12 @@ public class GuiHelper{
 		labelTest.setBackground(Color.black);
 		labelTest.setOpaque(true);//display background color
 		labelTest.setBorder(border);
+		labelTest.setHorizontalAlignment(JLabel.CENTER);
+		labelTest.setVerticalAlignment(JLabel.CENTER);
+		labelTest.setBounds(100, 100, 250, 250);
 		
+//		mainMenu.setLayout(null);
 		mainMenu.setVisible(true);// make mainMenu visible
+//		mainMenu.pack();
 	}
 }
