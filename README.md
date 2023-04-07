@@ -41,3 +41,8 @@ in ```note/note.md```. You can see how I done during the process.
 * Feature:
   * Contrast
   * Saturation
+### Ver 0.4
+* Feature:
+  * GUI
+  * project manager
+  * preview window
