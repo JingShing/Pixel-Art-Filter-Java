@@ -1,3 +1,5 @@
+this note if for recording how to do in eclipse and maven
+
 Using eclipse and maven
 
 please install eclipse and maven
