@@ -7,6 +7,7 @@ This project is using [Python Pixel Art Filter Tool](https://github.com/JingShin
 Still working on...
 
 ## Envirorment
+### Before ver 0.3
 I don't use any of IDE or project set. So I will give a method of how to use opencv with javac in cmd and local envirorment.
 
 Before we started. It will need to go to [Opencv Files](https://sourceforge.net/projects/opencvlibrary/files/) download the newest. You will get  ```.exe``` compressed file. Activate it to get a file.
@@ -16,6 +17,13 @@ After depressed it. You will get a folder named ```opencv``` . Go to this file p
 Activate CMD and using CD load to the folder of ```PixelTransform.java```. Enter this command to compile the file:  ```javac -d . -classpath .;opencv-version.jar PixelTransform.java```
 
 And if you want to run the compiled class please enter this command: ```java -classpath .;opencv-version.jar pixel.filter.PixelTransform```
+
+### After ver 0.3
+I started use eclipse and maven as my IDE and project manager.
+
+And this is my first time to use them so I make a note for it.
+
+in ```note/note.md```. You can see how I done during the process.
 
 ## Version
 ### Ver 0.1
