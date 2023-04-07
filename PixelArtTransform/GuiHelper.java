@@ -57,5 +57,8 @@ public class GuiHelper{
 //		mainMenu.setLayout(null);
 		mainMenu.setVisible(true);// make mainMenu visible
 //		mainMenu.pack();
+		
+		ImageDisplay imageDisplay = new ImageDisplay();
+		imageDisplay.setImage("test.png");
 	}
 }
