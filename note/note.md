@@ -1,0 +1,23 @@
+Using eclipse and maven
+
+please install eclipse and maven
+
+### maven project 
+GroupID：idv.jingshing. fore means: com as company name, org means non profittable and idv means individual. jingshing is my name.
+
+ArtifactID：project name
+
+### Opencv
+
+1. In the Run menu, select Run Configuration.
+2. Go to the Arguments tab
+3. Add this in the VM arguments field:```-Djava.library.path="/path/to/OpenCV/library"```
+
+### pom.xml
+```
+<dependency>
+		<groupId>org.opencv</groupId>
+   		<artifactId>opencv</artifactId>
+   		<version>460</version>
+</dependency>
+```
