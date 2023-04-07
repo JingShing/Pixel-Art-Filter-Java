@@ -11,7 +11,7 @@ ArtifactID：project name
 
 1. In the Run menu, select Run Configuration.
 2. Go to the Arguments tab
-3. Add this in the VM arguments field:```-Djava.library.path="/path/to/OpenCV/library"```
+3. Add this in the VM arguments field:```-Djava.library.path="/path/to/OpenCV/library"``` // this path is to the folder put dll
 
 ### pom.xml
 ```
