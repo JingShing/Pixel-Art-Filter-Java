@@ -49,3 +49,4 @@ in ```note/note.md```. You can see how I done during the process.
   * GUI
   * project manager
   * preview window
+  * first package release edition
