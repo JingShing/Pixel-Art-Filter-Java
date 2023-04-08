@@ -6,6 +6,9 @@
 
 仍在開發...
 
+## GUI
+![GUI](image/GUI.png)
+
 ## 環境
 ### 在 ver 0.3 之前
 我沒有使用任何 IDE 和 Java 專案管理工具。底下會說明如何使用 javac 和 cmd 在本地環境運行代碼。
