@@ -1,6 +1,0 @@
-compile:
-javac -d . PixelTransform.java
-javac -d . -classpath .;opencv-460.jar PixelTransform.java
-
-run:
-java -classpath .;opencv-460.jar pixel.filter.PixelTransform
