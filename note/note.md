@@ -23,3 +23,6 @@ ArtifactID：project name
    		<version>460</version>
 </dependency>
 ```
+
+### DLL
+remeber to change Native library location to the folder put dll file.
