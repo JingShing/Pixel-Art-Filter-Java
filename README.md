@@ -6,6 +6,9 @@ This project is using [Python Pixel Art Filter Tool](https://github.com/JingShin
 
 Still working on...
 
+## GUI
+![GUI](image/GUI.png)
+
 ## Envirorment
 ### Before ver 0.3
 I don't use any of IDE or project set. So I will give a method of how to use opencv with javac in cmd and local envirorment.
