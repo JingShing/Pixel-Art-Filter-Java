@@ -28,7 +28,15 @@ import java.util.Scanner;
 
 public class PixelTransform{
     public static void main(String[] args) {
-        // file path - string
+        
+    }
+    public static String pixelTransformProcess(String src, int k, double scale, int blur, int erode, int contrast, int saturation) {
+    	String OutputFilePath = "test.png";
+    	saveImg(transform(src, k, scale, blur, erode, contrast, saturation), OutputFilePath);
+    	return OutputFilePath;
+    }
+    public static void pixelTrnasformInput() {
+    	// file path - string
         Scanner scan = new Scanner(System.in);
         System.out.printf("Please input the file path: ");
         // color number(K) - int
