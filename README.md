@@ -4,8 +4,6 @@ Pixel Art filter made with Java
 
 This project is using [Python Pixel Art Filter Tool](https://github.com/JingShing-Tools/Pixel-Art-transform-in-python) as reference. And use Java to rewrite the project.
 
-Still working on...
-
 ## GUI
 ![GUI](image/GUI.png)
 
@@ -50,3 +48,5 @@ in ```note/note.md```. You can see how I done during the process.
   * project manager
   * preview window
   * first packed release edition
+
+Still working on...
