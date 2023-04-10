@@ -4,8 +4,6 @@
 
 本專案透過 [Python 像素濾鏡工具](https://github.com/JingShing-Tools/Pixel-Art-transform-in-python) 作為參考專案。以此延伸用 Java 編寫此專案。
 
-仍在開發...
-
 ## GUI
 ![GUI](image/GUI.png)
 
@@ -52,3 +50,5 @@
   * 專案化管理
   * 預覽窗口
   * 首個打包釋出的版本
+
+仍在開發...
