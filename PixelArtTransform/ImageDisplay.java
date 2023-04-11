@@ -8,20 +8,20 @@ import javax.swing.ImageIcon;
 
 public class ImageDisplay {
 	JFrame imageDisplay = new JFrame();
-	JLabel imageLabel = new JLabel(new ImageIcon("src/icon/icon.png"));
+	JLabel imageLabel = new JLabel(new ImageIcon("src/icon/icon.png"));// set image display frame
 	ImageDisplay(){
 		imageDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		imageDisplay.setTitle("Preview");// window title
-		imageDisplay.setIconImage(new ImageIcon("src/icon/icon.png").getImage());
-		imageDisplay.setSize(500, 500);
+		imageDisplay.setIconImage(new ImageIcon("src/icon/icon.png").getImage());// set default icon
+		imageDisplay.setSize(500, 500);// set image display window size
 		Color bgColor = new Color(0, 0, 0); // black
 		imageDisplay.getContentPane().setBackground(bgColor);
 		imageDisplay.add(imageLabel);
-		imageDisplay.pack();
-		imageDisplay.setVisible(true);
+		imageDisplay.pack();// make size suitable in image
+		imageDisplay.setVisible(true);// make it visible
 	}
 	public void setImage(String filePath) {
 		imageLabel.setIcon(new ImageIcon(filePath));
-		imageDisplay.pack();
+		imageDisplay.pack();// suit for image
 	}
 }
