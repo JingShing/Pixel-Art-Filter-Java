@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GuiHelper extends JFrame implements ActionListener{
-//	JFrame mainMenu = new JFrame();// create a mainMenu
+	// this class is for realizing a window for gui and display image
 	// components
 	JButton transformButton;
 	JButton fileSelectButton;
@@ -102,6 +102,7 @@ public class GuiHelper extends JFrame implements ActionListener{
 	}
 	
 	private void setInput(JFrame frame) {
+		// k, scale, blur, erode, contrast, saturation
 		Color textColor = new Color(255, 255, 255);
 		kInput = new JTextField("3");
 		kLabel = new JLabel("Color num:");
