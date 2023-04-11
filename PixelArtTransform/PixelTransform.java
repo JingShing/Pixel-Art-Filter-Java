@@ -64,6 +64,8 @@ public class PixelTransform{
 
     public static void saveImg(BufferedImage image, String fileName) {
         try {
+        	// output file
+        	// png
             File outputfile = new File(fileName);
             ImageIO.write(image, "png", outputfile);
         } catch (IOException e) {
