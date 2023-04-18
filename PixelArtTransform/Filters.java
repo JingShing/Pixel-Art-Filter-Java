@@ -33,13 +33,13 @@ public class Filters{
             e.printStackTrace();
         }
     }
-	public static double[] get(Mat mat, int row, int col) {
-        if(row<0 || row>=mat.rows() || col<0 || col>=mat.cols()) return null;
-	    double[] values = new double[mat.channels()];
-	    for (int i = 0; i < mat.channels(); i++) {
-	        values[i] = mat.get(row, col)[i];
-	    }
-	    return values;
+	public static double[] get(Mat image, int i, int j) {
+        if(i>=image.rows() || i<0 || j>=image.cols() || j<0) return null;
+        return image.get(i, j);
+    }
+	public static double get(Mat mat, int row, int col, int id) {
+        if(row<0 || row>=mat.rows() || col<0 || col>=mat.cols()) return 0;
+	    return mat.get(row, col)[id];
 	}
 	
     public static Mat kuwahara(Mat image, int scale) {
