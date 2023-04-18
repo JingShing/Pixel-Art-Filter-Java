@@ -23,7 +23,7 @@ public class Filters{
         Mat imgMat = Imgcodecs.imread(fileSrc);
 		//Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2GRAY);
 //		saveImg(Normalized(imgMat), "test.png");
-		saveImg(kuwahara(imgMat, 4), "test.png");
+		saveImg(kuwahara(imgMat, 5), "test.png");
 	}
 	public static void saveImg(Mat image, String fileName) {
         try {
@@ -42,11 +42,23 @@ public class Filters{
 	    return mat.get(row, col)[id];
 	}
 	
-    public static Mat kuwahara(Mat image, int scale) {
+	public static Mat kuwahara(Mat image, int scale) {
         if(scale>5 || scale<=0) return image;
+ 
         Mat output;
         if(image.channels()==3) output = new Mat(image.rows(), image.cols(), CvType.CV_8UC3);
         else output = new Mat(image.rows(), image.cols(), CvType.CV_8UC1);
+
+        double matrix[][][] = new double[output.rows()][output.cols()][output.channels()];
+        for(int i=0 ; i<output.rows() ; i++) {
+            for(int j=0 ; j<output.cols() ; j++) {
+                double data[] = get(image, i, j);
+                for(int k=0 ; k<output.channels() ; k++) {
+                    matrix[i][j][k] = data[k];
+            }
+            }
+        }
+
         for(int i=0 ; i<image.rows() ; i++) {
             for(int j=0 ; j<image.cols() ; j++) {
                 double[] data=new double[3];
@@ -57,11 +69,11 @@ public class Filters{
                     for(int dx=-scale ; dx<=scale ; dx++) {
                         for(int dy=-scale ; dy<=scale ; dy++) {
                             int nowX = i+dx, nowY = j+dy;
-                            if(get(image, nowX, nowY)==null) continue;
-                            if(dx+dy<=0 && dx-dy<=0) {avg[0]+=get(image, nowX, nowY)[channel]; sii[0]+=get(image, nowX, nowY)[channel]*get(image, nowX, nowY)[channel]; count[0]++;}
-                            if(dx+dy>=0 && dx-dy<=0) {avg[1]+=get(image, nowX, nowY)[channel]; sii[1]+=get(image, nowX, nowY)[channel]*get(image, nowX, nowY)[channel]; count[1]++;}
-                            if(dx+dy>=0 && dx-dy>=0) {avg[2]+=get(image, nowX, nowY)[channel]; sii[2]+=get(image, nowX, nowY)[channel]*get(image, nowX, nowY)[channel]; count[2]++;}
-                            if(dx+dy<=0 && dx-dy>=0) {avg[3]+=get(image, nowX, nowY)[channel]; sii[3]+=get(image, nowX, nowY)[channel]*get(image, nowX, nowY)[channel]; count[3]++;}
+                            if(nowX<0 || nowX>=image.rows() || nowY<0 || nowY>=image.cols()) continue;
+                            if(dx+dy<=0 && dx-dy<=0) {avg[0]+=matrix[nowX][nowY][channel]; sii[0]+=matrix[nowX][nowY][channel]*matrix[nowX][nowY][channel]; count[0]++;}
+                            if(dx+dy>=0 && dx-dy<=0) {avg[1]+=matrix[nowX][nowY][channel]; sii[1]+=matrix[nowX][nowY][channel]*matrix[nowX][nowY][channel]; count[1]++;}
+                            if(dx+dy>=0 && dx-dy>=0) {avg[2]+=matrix[nowX][nowY][channel]; sii[2]+=matrix[nowX][nowY][channel]*matrix[nowX][nowY][channel]; count[2]++;}
+                            if(dx+dy<=0 && dx-dy>=0) {avg[3]+=matrix[nowX][nowY][channel]; sii[3]+=matrix[nowX][nowY][channel]*matrix[nowX][nowY][channel]; count[3]++;}
                         }
                     }
                     for(int index=0 ; index<4 ; index++) {
