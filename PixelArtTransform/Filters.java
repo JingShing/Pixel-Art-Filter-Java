@@ -23,7 +23,7 @@ public class Filters{
         Mat imgMat = Imgcodecs.imread(fileSrc);
 		//Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2GRAY);
 //		saveImg(Normalized(imgMat), "test.png");
-		saveImg(kuwahara3(imgMat, 4), "test.png");
+		saveImg(kuwahara(imgMat, 4), "test.png");
 	}
 	public static void saveImg(Mat image, String fileName) {
         try {
@@ -41,107 +41,6 @@ public class Filters{
 	    }
 	    return values;
 	}
-
-	public static Mat kuwahara2(Mat image, int scale) {
-	    if(scale>5 || scale<=0) return image;
-
-	    Mat output = new Mat(image.rows(), image.cols(), image.type());
-
-	    for(int i=scale ; i<image.rows()-scale ; i++) {
-	        for(int j=scale ; j<image.cols()-scale ; j++) {
-	            double[] data=new double[image.channels()];
-
-	            for(int channel=0 ; channel<image.channels() ; channel++) {
-	                double[] avg = new double[4];
-	                double[] sii = new double[4];
-	                int[] count = new int[4];
-
-	                for(int index=0 ; index<4 ; index++) {
-	                    avg[index] = 0;
-	                    sii[index] = 0;
-	                    count[index] = 0;
-	                }
-
-	                for(int dx=-scale ; dx<=scale ; dx++) {
-	                    for(int dy=-scale ; dy<=scale ; dy++) {
-	                        double[] pixel = image.get(i+dx, j+dy);
-
-	                        if(pixel == null) {
-	                            continue;
-	                        }
-
-	                        int index = (dx+dy<=0 && dx-dy<=0) ? 0 :
-	                                    (dx+dy>=0 && dx-dy<=0) ? 1 :
-	                                    (dx+dy>=0 && dx-dy>=0) ? 2 : 3;
-
-	                        avg[index] += pixel[channel];
-	                        sii[index] += pixel[channel] * pixel[channel];
-	                        count[index]++;
-	                    }
-	                }
-
-	                int minIndex=0;
-	                double minData=sii[0];
-
-	                for(int index=1 ; index<4 ; index++) {
-	                    if(sii[index] < minData) {
-	                        minData = sii[index];
-	                        minIndex = index;
-	                    }
-	                }
-
-	                data[channel] = avg[minIndex]/count[minIndex];
-	            }
-
-	            output.put(i, j, data);
-	        }
-	    }
-
-	    return output;
-	}
-	
-	public static Mat kuwahara3(Mat image, int scale) {
-		if(scale>5 || scale<=0) return image;
-		Mat output = new Mat(image.rows(), image.cols(), image.type());
-
-		for(int i=scale ; i<image.rows()-scale ; i++) {
-		    for(int j=scale ; j<image.cols()-scale ; j++) {
-		        double[] data=new double[image.channels()];
-		        double[] avg = new double[4]; Arrays.fill(avg, 0);
-		        double[] sii = new double[4]; Arrays.fill(sii, 0);
-		        int[] count = new int[4]; Arrays.fill(count, 0);
-
-		        for(int dx=-scale ; dx<=scale ; dx++) {
-		            for(int dy=-scale ; dy<=scale ; dy++) {
-		                int nowX = i+dx, nowY = j+dy;
-		                if(dx+dy<=0 && dx-dy<=0) {avg[0]+=image.get(nowX, nowY)[0]; sii[0]+=image.get(nowX, nowY)[0]*image.get(nowX, nowY)[0]; count[0]++;}
-		                if(dx+dy>=0 && dx-dy<=0) {avg[1]+=image.get(nowX, nowY)[0]; sii[1]+=image.get(nowX, nowY)[0]*image.get(nowX, nowY)[0]; count[1]++;}
-		                if(dx+dy>=0 && dx-dy>=0) {avg[2]+=image.get(nowX, nowY)[0]; sii[2]+=image.get(nowX, nowY)[0]*image.get(nowX, nowY)[0]; count[2]++;}
-		                if(dx+dy<=0 && dx-dy>=0) {avg[3]+=image.get(nowX, nowY)[0]; sii[3]+=image.get(nowX, nowY)[0]*image.get(nowX, nowY)[0]; count[3]++;}
-		            }
-		        }
-		        for(int index=0 ; index<4 ; index++) {
-		            avg[index] = avg[index]/count[index];
-		            sii[index] = sii[index]/count[index]-avg[index]*avg[index];
-		        }
-		        int minIndex=0; double minData=sii[0];
-		        for(int index=0 ; index<4 ; index++) {
-		            if(sii[index]<minData) {
-		                minData = sii[index]; minIndex = index;
-		            }
-		        }
-		        for(int channel=0 ; channel<image.channels() ; channel++) {
-		            data[channel] = avg[minIndex];
-		        }
-		        if(image.channels()==3) output.put(i, j, data);
-                else output.put(i, j, data[0]);
-//		        output.put(i, j, data);
-		    }
-		}
-
-		return output;
-	}
-
 	
     public static Mat kuwahara(Mat image, int scale) {
         if(scale>5 || scale<=0) return image;
