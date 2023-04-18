@@ -11,6 +11,9 @@ GroupID：idv.jingshing. fore means: com as company name, org means non profitta
 
 ArtifactID：project name
 
+if cmd below hint Y:
+> pleaze enter Y
+
 ### Opencv
 
 1. In the Run menu, select Run Configuration.
