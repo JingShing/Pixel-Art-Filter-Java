@@ -1,24 +1,15 @@
-package pixel.filter;
+package idv.jingshing.pixel.fileter;
+
 import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.TermCriteria;
-import org.opencv.core.Size;
-import org.opencv.core.Range;
 
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
 
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -33,7 +24,6 @@ public class Filters{
 		//Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2GRAY);
 		saveImg(Normalized(imgMat), "test.png");
 	}
-	
 	public static void saveImg(Mat image, String fileName) {
         try {
             File outputfile = new File(fileName);
@@ -42,12 +32,14 @@ public class Filters{
             e.printStackTrace();
         }
     }
-	
-    public static double[] get(Mat image, int i, int j) {
-        if(i>=image.rows() || i<0 || j>=image.cols() || j<0) return null;
-        return image.get(i, j);
-    }
-	
+	public static double[] get(Mat mat, int row, int col) {
+	    double[] values = new double[mat.channels()];
+	    for (int i = 0; i < mat.channels(); i++) {
+	        values[i] = mat.get(row, col)[i];
+	    }
+	    return values;
+	}
+
     public static Mat kuwahara(Mat image, int scale) {
         if(scale>5 || scale<=0) return image;
         Mat output;
@@ -88,14 +80,18 @@ public class Filters{
         }
         return output;
     }
-	
-    public static Mat Normalized(Mat image) {
-        double mask[][] = {{0,0,0,8,4}, {2,4,8,4,2}, {1,2,4,2,1}}; int weight = 42;
-        Mat output = image.clone();
+    
+    public static Mat Normalized(Mat input) {
+        double[][] mask = {{0,0,0,8,4}, {2,4,8,4,2}, {1,2,4,2,1}};
+        int weight = 42;
+        Mat output = new Mat();
+        input.copyTo(output);
+        
         for(int i=0 ; i<output.rows() ; i++) {
             for(int j=0 ; j<output.cols() ; j++) {
-                double diff[] = new double[3];
-                double data[] = get(output, i, j);
+                double[] diff = new double[3];
+                double[] data = output.get(i, j);
+                
                 for(int channel=0 ; channel<output.channels() ; channel++) {
                     if(data[channel]>=128) {
                         diff[channel] = data[channel]-255;
@@ -105,25 +101,35 @@ public class Filters{
                         data[channel] = 0;
                     }
                 }
+                
                 for(int a=0 ; a<=2 && i+a>=0 && i+a<output.rows() ; a++) {
-                    for(int b=-2 ; b<=2 && j+b>=0 && j+b<output.cols() ; b++) {
-                        double putData[] = get(output, i+a, j+b);
+                    for(int b=0 ; b<=2 && j+b>=0 && j+b<output.cols() ; b++) {
+                        double[] putData = output.get(i+a, j+b);
+                        
                         for(int channel=0 ; channel<output.channels() ; channel++) {
-                            putData[channel] += diff[channel]*mask[a][b+2]/weight;
+                            if (j + b < 0) {
+                                putData[channel] += diff[channel] * mask[a][2] / weight;
+                            } else {
+                                putData[channel] += diff[channel] * mask[a][b+2] / weight;
+                            }
+                            
                             if(putData[channel]>=256) putData[channel]=255;
                             if(putData[channel]<0) putData[channel]=0;
                         }
+                        
                         if(output.channels()==3) output.put(i+a, j+b, putData);
                         else output.put(i+a, j+b, putData[0]);
                     }
                 }
+                
                 if(output.channels()==3) output.put(i, j, data);
                 else output.put(i, j, data[0]);
             }
         }
+        
         return output;
     }
-	
+
     public static Mat Flame(Mat input) {
         Mat output = new Mat();
         input.copyTo(output);
@@ -146,9 +152,10 @@ public class Filters{
                 else output.put(i, j, data[0]);
             }
         }
+        
         return output;
     }
-	
+    
     private static BufferedImage matToBufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {
