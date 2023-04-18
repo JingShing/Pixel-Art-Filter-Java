@@ -1,4 +1,4 @@
-package idv.jingshing.pixel.fileter;
+package idv.jingshing.pixel.filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

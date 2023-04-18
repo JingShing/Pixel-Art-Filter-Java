@@ -1,4 +1,4 @@
-package idv.jingshing.pixel.fileter;
+package idv.jingshing.pixel.filter;
 
 public class PixelFilterApplication {
 	// this class is application class you should use this class for init the gui
