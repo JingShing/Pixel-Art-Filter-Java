@@ -33,6 +33,7 @@ public class Filters{
 		//Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2GRAY);
 		saveImg(Normalized(imgMat), "test.png");
 	}
+	
 	public static void saveImg(Mat image, String fileName) {
         try {
             File outputfile = new File(fileName);
@@ -41,10 +42,12 @@ public class Filters{
             e.printStackTrace();
         }
     }
+	
     public static double[] get(Mat image, int i, int j) {
         if(i>=image.rows() || i<0 || j>=image.cols() || j<0) return null;
         return image.get(i, j);
     }
+	
     public static Mat kuwahara(Mat image, int scale) {
         if(scale>5 || scale<=0) return image;
         Mat output;
@@ -85,6 +88,7 @@ public class Filters{
         }
         return output;
     }
+	
     public static Mat Normalized(Mat image) {
         double mask[][] = {{0,0,0,8,4}, {2,4,8,4,2}, {1,2,4,2,1}}; int weight = 42;
         Mat output = image.clone();
@@ -119,6 +123,32 @@ public class Filters{
         }
         return output;
     }
+	
+    public static Mat Flame(Mat input) {
+        Mat output = new Mat();
+        input.copyTo(output);
+        
+        for(int i=0 ; i<output.rows() ; i++) {
+            for(int j=0 ; j<output.cols() ; j++) {
+                double[] diff = new double[3];
+                double[] data = output.get(i, j);
+                
+                for(int channel=0 ; channel<output.channels() ; channel++) {
+                    if(data[channel]>=128) {
+                        diff[channel] = data[channel]-255;
+                        data[channel] = 255;
+                    } else {
+                        diff[channel] = data[channel];
+                        data[channel] = 0;
+                    }
+                }
+                if(output.channels()==3) output.put(i, j, data);
+                else output.put(i, j, data[0]);
+            }
+        }
+        return output;
+    }
+	
     private static BufferedImage matToBufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {
