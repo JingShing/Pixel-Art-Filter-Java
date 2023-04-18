@@ -5,6 +5,8 @@ Using eclipse and maven
 please install eclipse and maven
 
 ### maven project 
+maven-archetype-quickstart
+
 GroupID：idv.jingshing. fore means: com as company name, org means non profittable and idv means individual. jingshing is my name.
 
 ArtifactID：project name
