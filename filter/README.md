@@ -1,5 +1,7 @@
 # Filters
 
+Kuwahara: O(n^3)
+
 ## Flame
 ![flame](image/coffee_cap/flame.png)
 
