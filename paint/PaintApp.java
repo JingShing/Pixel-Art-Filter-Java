@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JColorChooser;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class PaintApp {
 	// Main method to start the application
@@ -41,7 +44,7 @@ public class PaintApp {
 	            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            frame.setLayout(new BorderLayout());
 	            frame.add(new TestPane());
-	            frame.pack();
+//	            frame.pack();
 	            frame.setSize(900, 900);
 	            frame.setLocationRelativeTo(null);
 	            frame.setVisible(true);
@@ -84,8 +87,14 @@ public class PaintApp {
 	    private BufferedImage background;
 
 	    public PaintPane() {
-	        setBackground(Color.WHITE);
+//	        setBackground(Color.WHITE);
 	        setForeground(Color.BLACK);
+	        try {
+	        	File file = new File("image/or.png");
+	        	background = ImageIO.read(file);
+	         } catch (IOException e) {
+	            System.out.println("Error occurred when reading image.");
+	         }
 	        // Add a mouse listener for drawing dots
 	        MouseAdapter handler = new MouseAdapter() {
 
