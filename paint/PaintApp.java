@@ -1,4 +1,3 @@
-// Import required libraries
 package idv.jingshing.pixel.filter;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JColorChooser;
 
 public class PaintApp {
 	// Main method to start the application
@@ -42,6 +43,7 @@ public class PaintApp {
 	            frame.setLayout(new BorderLayout());
 	            frame.add(new TestPane());
 	            frame.pack();
+	            frame.setSize(900, 900);
 	            frame.setLocationRelativeTo(null);
 	            frame.setVisible(true);
 	        }
@@ -64,34 +66,17 @@ public class PaintApp {
 
 	// Class for the panel containing the color selection buttons
 	public class ColorsPane extends JPanel {
-
+		JButton paletteButton;
 	    public ColorsPane(PaintPane paintPane) {
 	        // Create a button for each color and add it to the panel
-	        add(new JButton(new ColorAction(paintPane, "Red", Color.RED)));
-	        add(new JButton(new ColorAction(paintPane, "Green", Color.GREEN)));
-	        add(new JButton(new ColorAction(paintPane, "Blue", Color.BLUE)));
+	    	paletteButton = new JButton("Pick a color");
+	    	paletteButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+		            paintPane.setForeground(JColorChooser.showDialog(null, "pick a color", Color.black));
+	            }
+	        });
+	    	add(paletteButton);
 	    }
-
-	    // Class for the action performed when a color button is pressed
-	    public class ColorAction extends AbstractAction {
-
-	        private PaintPane paintPane;
-	        private Color color;
-
-	        private ColorAction(PaintPane paintPane, String name, Color color) {
-	            putValue(NAME, name);
-	            this.paintPane = paintPane;
-	            this.color = color;
-	        }
-
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            // Set the paint panel's foreground color to the selected color
-	            paintPane.setForeground(color);
-	        }
-
-	    }
-
 	}
 
 	// Class for the panel used for painting
