@@ -1,12 +1,20 @@
 package idv.jingshing.pixel.filter;
 
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.ArrayList;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+import org.opencv.imgcodecs.Imgcodecs;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class Filters{
     private ArrayList<Mat> img = new ArrayList<>();
@@ -23,6 +31,16 @@ public class Filters{
         if(img.size()!=0) return;
         img.add(input); return;
     }
+    // for test
+    /* 
+	public static void main(String[] args) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
+		String fileSrc = "image/or.jpg";
+        Mat imgMat = Imgcodecs.imread(fileSrc);
+		//Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_BGR2GRAY);
+		saveImg(unknow(imgMat), "test.png");
+	}*/
 	public double[] get(Mat mat, int row, int col) {
         if(row<0 || row>=mat.rows() || col<0 || col>=mat.cols()) return null;
 	    double[] values = new double[mat.channels()];
