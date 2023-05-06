@@ -48,5 +48,12 @@ in ```note/note.md```. You can see how I done during the process.
   * project manager
   * preview window
   * first packed release edition
+### Ver 0.5
+* Feature:
+  * Add painter window
+    * now can draw on image
+    * now can save drawed image
+  * Add more filter window
+    * add filters class in main gui
 
 Still working on...
