@@ -52,6 +52,7 @@ in ```note/note.md```. You can see how I done during the process.
 * Feature:
   * Add painter window
     * now can draw on image
+    * now can choose color
     * now can save drawed image
   * Add more filter window
     * add filters class in main gui
