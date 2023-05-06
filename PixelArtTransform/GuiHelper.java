@@ -45,7 +45,7 @@ public class GuiHelper extends JFrame implements ActionListener{
 	ImageEditor imageEditor = null;
 	DrawGUI painter = null;
 	
-	String filePath = "src/icon/icon.png";
+	String filePath = "";
 	// set default image to icon
 	public GuiHelper() {
 		PixelTransform pixelTransform = new PixelTransform();
@@ -179,9 +179,9 @@ public class GuiHelper extends JFrame implements ActionListener{
 		}
 		else if(e.getSource()==painterButton) {
 			if(painter==null) {
-				if(filePath == "")filePath = "src/icon/icon.png";
-				Mat image = Imgcodecs.imread(filePath);
-		        DrawGUI check = new DrawGUI(image);
+		        DrawGUI check = null;
+        		if (filePath=="")check = new DrawGUI("src/icon/icon.png");
+        		else check = new DrawGUI(filePath);
 		        check.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				check.setVisible(true); // display frame
 			}

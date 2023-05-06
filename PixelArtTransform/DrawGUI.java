@@ -1,14 +1,10 @@
 package idv.jingshing.pixel.filter;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import org.opencv.core.Mat;
 import org.opencv.core.Core;
-import java.util.Arrays;
-import java.util.logging.Handler;
 import java.util.ArrayList;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.event.ActionEvent;
@@ -21,13 +17,15 @@ import org.opencv.core.CvType;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JColorChooser;
 public class DrawGUI extends JFrame {
 
     private PaintPane label;
     private JButton saveButton;
     private JButton rebackButton;
+    private JButton paletteButton;
     private JPanel button;
+    
     private ArrayList<Mat> img = new ArrayList<>();
     public Mat getNowImg() {
         if(img.size()==0) return null;
@@ -42,8 +40,10 @@ public class DrawGUI extends JFrame {
         if(img.size()!=0) return;
         img.add(input); return;
     }
-    public DrawGUI(Mat image) {
-        super("Painter");
+    public DrawGUI(String filePath) {
+    	super("Painter");
+    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        Mat image = Imgcodecs.imread(filePath);
         ImageIcon iconImage = new ImageIcon("src/icon/icon.png");// create image icon
 		setIconImage(iconImage.getImage());
         setImg(image);
@@ -79,9 +79,16 @@ public class DrawGUI extends JFrame {
             }
         });
         
-        button = new JPanel(new GridLayout(1, 2));
+        button = new JPanel(new GridLayout(1, 3));
+        paletteButton = new JButton("Pick a color");
+    	paletteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+	            label.setForeground(JColorChooser.showDialog(null, "pick a color", Color.black));
+            }
+        });
         button.add(saveButton);
         button.add(rebackButton);
+        button.add(paletteButton);
         // TODO: add listener to save button
         
         // add components to frame
@@ -230,9 +237,7 @@ public class DrawGUI extends JFrame {
         }
     }
     public static void main(String[] args) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        Mat image = Imgcodecs.imread("image/or.jpg");
-        DrawGUI check = new DrawGUI(image);
+        DrawGUI check = new DrawGUI("image/or.jpg");
         check.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		check.setVisible(true); // display frame
     }
