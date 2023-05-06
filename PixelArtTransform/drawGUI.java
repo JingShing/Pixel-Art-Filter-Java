@@ -42,17 +42,18 @@ public class drawGUI extends JFrame {
         if(img.size()!=0) return;
         img.add(input); return;
     }
-    
     public drawGUI(Mat image) {
         super("My Image Preview");
         setImg(image);
-
+        JLabel imageSize = new JLabel();
+        Image image2 = matToBufferedImage(image);
+        imageSize.setIcon(new ImageIcon(image2));
         // create label for image preview
         label = new PaintPane();
         displayImage(image);
-        label.setPreferredSize(new Dimension(80, 50));
-        this.pack();
-        
+        label.setPreferredSize(new Dimension(image.width(), image.height()));
+        label.setSize(image.width(), image.height());
+        setSize(image.width(), image.height());
         // create text area and save button
         saveButton = new JButton("Save");
         rebackButton = new JButton("返回");
@@ -82,10 +83,11 @@ public class drawGUI extends JFrame {
         // TODO: add listener to save button
         
         // add components to frame
-        
-        getContentPane().add(label, BorderLayout.CENTER);
-        getContentPane().add(button, BorderLayout.SOUTH);
-        
+
+        add(label, BorderLayout.CENTER);
+        add(imageSize, BorderLayout.CENTER);
+        add(button, BorderLayout.SOUTH);    
+        pack();
     }
     public class PaintPane extends JPanel {
 
@@ -230,7 +232,6 @@ public class drawGUI extends JFrame {
         Mat image = Imgcodecs.imread("image/or.jpg");
         drawGUI check = new drawGUI(image);
         check.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		check.setSize(400, 200); // set frame size
 		check.setVisible(true); // display frame
     }
 }
