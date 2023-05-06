@@ -119,6 +119,7 @@ public class ImageEditor extends JFrame{
                     String imagePath = fileChooser.getSelectedFile().getPath();
                     allImg.setImg(Imgcodecs.imread(imagePath)); // 使用 OpenCV 讀取圖片
                     displayImage(allImg.getNowImg()); // 顯示圖片在 JLabel 上
+                    pack();
                 }
             }
         });
