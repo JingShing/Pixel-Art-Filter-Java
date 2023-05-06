@@ -29,12 +29,12 @@ public class ImageEditor extends JFrame{
     private JButton saveButton;
 
     public static void main(String[] args) {
-        ImageEditor check = new ImageEditor();
+        ImageEditor check = new ImageEditor("");
         check.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		check.setSize(400, 200); // set frame size
 		check.setVisible(true); // display frame
     }
-    public ImageEditor() {
+    public ImageEditor(String filePath) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // 設定視窗標題
         setTitle("Image Editor");
@@ -134,6 +134,12 @@ public class ImageEditor extends JFrame{
                 }
             }
         });
+        if(filePath=="");
+        else {
+        	allImg.setImg(Imgcodecs.imread(filePath)); // 使用 OpenCV 讀取圖片
+            displayImage(allImg.getNowImg()); // 顯示圖片在 JLabel 上
+            pack();
+        }
     }
     private void displayImage(Mat img) {
         if(img == null) return;

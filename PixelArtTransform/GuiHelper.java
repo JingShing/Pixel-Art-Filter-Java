@@ -6,6 +6,10 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
@@ -20,6 +24,8 @@ public class GuiHelper extends JFrame implements ActionListener{
 	// components
 	JButton transformButton;
 	JButton fileSelectButton;
+	JButton painterButton;
+	JButton filterButton;
 	
 	JTextField kInput;
 	JLabel kLabel;
@@ -36,7 +42,11 @@ public class GuiHelper extends JFrame implements ActionListener{
 	
 	ImageDisplay imageDisplay;
 	
-	String filePath = "";
+	ImageEditor imageEditor = null;
+	DrawGUI painter = null;
+	
+	String filePath = "src/icon/icon.png";
+	// set default image to icon
 	public GuiHelper() {
 		PixelTransform pixelTransform = new PixelTransform();
 		initUI(this);
@@ -50,7 +60,7 @@ public class GuiHelper extends JFrame implements ActionListener{
 		mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit out of application
 //		mainMenu.setResizable(false);// keep window from resized
 		mainMenu.setSize(500, 500); // set the x and y dimension
-		mainMenu.setLayout(new GridLayout(9, 2, 10, 0));
+		mainMenu.setLayout(new GridLayout(10, 2, 10, 0));
 		
 		// set icon
 		ImageIcon image = new ImageIcon("src/icon/icon.png");// create image icon
@@ -71,11 +81,17 @@ public class GuiHelper extends JFrame implements ActionListener{
 		fileSelectButton.addActionListener(this);
 		mainMenu.add(fileSelectButton);
 		
+		painterButton = new JButton("painter");
+		painterButton.addActionListener(this);
+		mainMenu.add(painterButton);
+		filterButton = new JButton("filters");
+		filterButton.addActionListener(this);
+		mainMenu.add(filterButton);		
+		
 		mainMenu.setVisible(true);// make mainMenu visible
 //		mainMenu.pack();
 		
 		imageDisplay = new ImageDisplay();
-		
 //		imageDisplay.setImage("test.png");
 	}
 	private void labelTest(JFrame mainMenu) {
@@ -159,6 +175,22 @@ public class GuiHelper extends JFrame implements ActionListener{
 			if(response == JFileChooser.APPROVE_OPTION) {
 				filePath = fileChooser.getSelectedFile().getAbsolutePath();
 				imageDisplay.setImage(filePath);
+			}
+		}
+		else if(e.getSource()==painterButton) {
+			if(painter==null) {
+				if(filePath == "")filePath = "src/icon/icon.png";
+				Mat image = Imgcodecs.imread(filePath);
+		        DrawGUI check = new DrawGUI(image);
+		        check.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				check.setVisible(true); // display frame
+			}
+		}
+		else if(e.getSource()==filterButton) {
+			if(imageEditor==null) {
+		        ImageEditor check = new ImageEditor(filePath);
+		        check.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				check.setVisible(true); // display frame
 			}
 		}
 	}
