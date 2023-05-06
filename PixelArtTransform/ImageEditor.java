@@ -1,5 +1,4 @@
 package idv.jingshing.pixel.filter;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,7 +16,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class ImageEditor extends JFrame {
+public class ImageEditor extends JFrame{
     private Filters allImg = new Filters();
     private JLabel imageLabel;
     private JButton backButton;
@@ -35,19 +34,16 @@ public class ImageEditor extends JFrame {
 		check.setSize(400, 200); // set frame size
 		check.setVisible(true); // display frame
     }
-	public ImageEditor() {
-		init();	
-	}
-    public void init() {
+    public ImageEditor() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        // set title
+        // 設定視窗標題
         setTitle("Image Editor");
-        // set window size
+        // 設定視窗大小
         setSize(800, 600);
-        // set close
+        // 設定視窗關閉動作
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // GUI component
+        // 建立 GUI 元件
         backButton = new JButton("返回");
         kuwaharaButton = new JButton("Kuwahara");
         scaleComboBox = new JComboBox<String>(new String[] { "1", "2", "3", "4" });
@@ -58,7 +54,7 @@ public class ImageEditor extends JFrame {
         saveButton = new JButton("儲存圖片");
         imageLabel = new JLabel();
 
-        // GUI layout
+        // 設定 GUI 元件佈局
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(6, 1));
@@ -76,12 +72,12 @@ public class ImageEditor extends JFrame {
         bottomPanel.add(loadButton);
         bottomPanel.add(saveButton);
 
-        // add GUI component to window
+        // 加入 GUI 元件到視窗
         add(buttonPanel, BorderLayout.WEST);
         add(imagePanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // button listener
+        // 設定按鈕事件監聽
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayImage(allImg.backReturn());
@@ -138,7 +134,7 @@ public class ImageEditor extends JFrame {
             }
         });
     }
-	private void displayImage(Mat img) {
+    private void displayImage(Mat img) {
         if(img == null) return;
         Image image = matToBufferedImage(img);
         imageLabel.setIcon(new ImageIcon(image));

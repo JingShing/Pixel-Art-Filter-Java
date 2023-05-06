@@ -75,6 +75,7 @@ public class GuiHelper extends JFrame implements ActionListener{
 //		mainMenu.pack();
 		
 		imageDisplay = new ImageDisplay();
+		
 //		imageDisplay.setImage("test.png");
 	}
 	private void labelTest(JFrame mainMenu) {
