@@ -37,11 +37,13 @@ public class ImageEditor extends JFrame{
     public ImageEditor(String filePath) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // 設定視窗標題
-        setTitle("Image Editor");
+        setTitle("Filters");
         // 設定視窗大小
         setSize(800, 600);
         // 設定視窗關閉動作
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon iconImage = new ImageIcon("src/icon/icon.png");// create image icon
+		setIconImage(iconImage.getImage());
 
         // 建立 GUI 元件
         backButton = new JButton("返回");

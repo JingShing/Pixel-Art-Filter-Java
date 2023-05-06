@@ -43,7 +43,9 @@ public class DrawGUI extends JFrame {
         img.add(input); return;
     }
     public DrawGUI(Mat image) {
-        super("My Image Preview");
+        super("Painter");
+        ImageIcon iconImage = new ImageIcon("src/icon/icon.png");// create image icon
+		setIconImage(iconImage.getImage());
         setImg(image);
         JLabel imageSize = new JLabel();
         Image image2 = matToBufferedImage(image);
