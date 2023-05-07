@@ -5,13 +5,13 @@
 本專案透過 [Python 像素濾鏡工具](https://github.com/JingShing-Tools/Pixel-Art-transform-in-python) 作為參考專案。以此延伸用 Java 編寫此專案。
 
 ## GUI
-### Main menu
-![GUI](image/GUI.png)
-### painter
+### 主選單
+![GUI](image/GUI2.png)
+### 畫布
 ![painter](image/painter.png)
-### palette
+### 調色盤
 ![palette](image/palette.png)
-### filters
+### 濾鏡
 ![filters](image/filters.png)
 
 ## 環境
