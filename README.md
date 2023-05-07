@@ -56,5 +56,11 @@ in ```note/note.md```. You can see how I done during the process.
     * now can save drawed image
   * Add more filter window
     * add filters class in main gui
+### Ver 0.5.1
+* Fixed:
+  * UI text
+  * UI layout
+  * if running filter button will be unavailable
+  * fixed undo button function
 
 Still working on...
