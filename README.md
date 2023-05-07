@@ -5,7 +5,14 @@ Pixel Art filter made with Java
 This project is using [Python Pixel Art Filter Tool](https://github.com/JingShing-Tools/Pixel-Art-transform-in-python) as reference. And use Java to rewrite the project.
 
 ## GUI
+### Main menu
 ![GUI](image/GUI.png)
+### painter
+![painter](image/painter.png)
+### palette
+![palette](image/palette.png)
+### filters
+![filters](image/filters.png)
 
 ## Envirorment
 ### Before ver 0.3
