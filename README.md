@@ -6,7 +6,7 @@ This project is using [Python Pixel Art Filter Tool](https://github.com/JingShin
 
 ## GUI
 ### Main menu
-![GUI](image/GUI.png)
+![GUI](image/GUI2.png)
 ### painter
 ![painter](image/painter.png)
 ### palette
