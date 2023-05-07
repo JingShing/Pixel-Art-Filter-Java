@@ -36,33 +36,43 @@ public class ImageEditor extends JFrame{
     }
     public ImageEditor(String filePath) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        // 設定視窗標題
+        // set title
         setTitle("Filters");
-        // 設定視窗大小
+        // set size
         setSize(800, 600);
-        // 設定視窗關閉動作
+        // set close action
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon iconImage = new ImageIcon("src/icon/icon.png");// create image icon
 		setIconImage(iconImage.getImage());
 
-        // 建立 GUI 元件
-        backButton = new JButton("返回");
+        // create gui component
+        backButton = new JButton("undo");
         kuwaharaButton = new JButton("Kuwahara");
-        scaleComboBox = new JComboBox<String>(new String[] { "1", "2", "3", "4" });
+        String[] scaleComboBoxItems = new String[5];
+        for (int i = 0; i < scaleComboBoxItems.length; i++) {
+            scaleComboBoxItems[i] = String.valueOf(i + 1);
+        }
+        scaleComboBox = new JComboBox<String>(scaleComboBoxItems);
+        // scaleComboBox = new JComboBox<String>(new String[] { "1", "2", "3", "4", "5", "6" });
         flameButton = new JButton("Flame");
         highGaussianButton = new JButton("High Gaussian");
         unknownButton = new JButton("Unknown");
-        loadButton = new JButton("載入圖片");
-        saveButton = new JButton("儲存圖片");
+        loadButton = new JButton("Load");
+        saveButton = new JButton("save");
         imageLabel = new JLabel();
 
-        // 設定 GUI 元件佈局
+        // set gui layout
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(6, 1));
         buttonPanel.add(backButton);
-        buttonPanel.add(kuwaharaButton);
-        buttonPanel.add(scaleComboBox);
+        JPanel kuwaPanel = new JPanel();
+        kuwaPanel.setLayout(new GridLayout(1, 2));
+        kuwaPanel.add(kuwaharaButton);
+        kuwaPanel.add(scaleComboBox);
+        buttonPanel.add(kuwaPanel);
+//        buttonPanel.add(kuwaharaButton);
+//        buttonPanel.add(scaleComboBox);
         buttonPanel.add(flameButton);
         buttonPanel.add(highGaussianButton);
         buttonPanel.add(unknownButton);
@@ -74,12 +84,12 @@ public class ImageEditor extends JFrame{
         bottomPanel.add(loadButton);
         bottomPanel.add(saveButton);
 
-        // 加入 GUI 元件到視窗
+        // add gui componet to window
         add(buttonPanel, BorderLayout.WEST);
         add(imagePanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // 設定按鈕事件監聽
+        // set action listener to button
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayImage(allImg.backReturn());
@@ -88,6 +98,7 @@ public class ImageEditor extends JFrame{
 
         kuwaharaButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	setButtonActive(false);
                 int scale = Integer.parseInt(scaleComboBox.getSelectedItem().toString());
                 displayImage(allImg.kuwahara(allImg.getNowImg(), scale));
             }
@@ -95,18 +106,21 @@ public class ImageEditor extends JFrame{
 
         flameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	setButtonActive(false);
                 displayImage(allImg.Flame(allImg.getNowImg()));
             }
         });
 
         highGaussianButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	setButtonActive(false);            	
                 displayImage(allImg.highGaussian(allImg.getNowImg()));
             }
         });
 
         unknownButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	setButtonActive(false);            	
                 displayImage(allImg.unknown(allImg.getNowImg()));
             }
         });
@@ -138,8 +152,8 @@ public class ImageEditor extends JFrame{
         });
         if(filePath=="");
         else {
-        	allImg.setImg(Imgcodecs.imread(filePath)); // 使用 OpenCV 讀取圖片
-            displayImage(allImg.getNowImg()); // 顯示圖片在 JLabel 上
+        	allImg.setImg(Imgcodecs.imread(filePath)); // use opencv load image
+            displayImage(allImg.getNowImg()); // display image on JLabel
             pack();
         }
     }
@@ -147,6 +161,7 @@ public class ImageEditor extends JFrame{
         if(img == null) return;
         Image image = matToBufferedImage(img);
         imageLabel.setIcon(new ImageIcon(image));
+        setButtonActive(true);
     }
     private static BufferedImage matToBufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
@@ -164,5 +179,14 @@ public class ImageEditor extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void setButtonActive(boolean active) {
+        kuwaharaButton.setEnabled(active);
+        flameButton.setEnabled(active);
+        highGaussianButton.setEnabled(active);
+        unknownButton.setEnabled(active);
+        loadButton.setEnabled(active);
+        saveButton.setEnabled(active);
+        backButton.setEnabled(active);
     }
 }

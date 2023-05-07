@@ -19,11 +19,11 @@ import java.io.IOException;
 public class Filters{
     private ArrayList<Mat> img = new ArrayList<>();
     public Mat getNowImg() {
-        if(img.size()==0) return null;
+        if(img.size()==1) return img.get(img.size()-1);
         return img.get(img.size()-1);
     }
     public Mat backReturn() {
-        if(img.size()==0) return null;
+        if(img.size()==1) return getNowImg();
         img.remove(img.size()-1);
         return getNowImg();
     }

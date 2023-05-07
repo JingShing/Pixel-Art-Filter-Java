@@ -58,7 +58,7 @@ public class DrawGUI extends JFrame {
         setSize(image.width(), image.height());
         // create text area and save button
         saveButton = new JButton("Save");
-        rebackButton = new JButton("返回");
+        rebackButton = new JButton("undo");
         
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -89,10 +89,8 @@ public class DrawGUI extends JFrame {
         button.add(saveButton);
         button.add(rebackButton);
         button.add(paletteButton);
-        // TODO: add listener to save button
         
         // add components to frame
-
         add(label, BorderLayout.CENTER);
         add(imageSize, BorderLayout.CENTER);
         add(button, BorderLayout.SOUTH);    
@@ -144,7 +142,6 @@ public class DrawGUI extends JFrame {
             } 
         };
         public PaintPane() {
-            //	        setBackground(Color.WHITE);
             setForeground(Color.BLACK);
             background = matToBufferedImage(getNowImg());
             // Add a mouse listener for drawing dots
