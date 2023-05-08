@@ -6,19 +6,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
-
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -48,7 +41,7 @@ public class GuiHelper extends JFrame implements ActionListener{
 	ImageEditor imageEditor = null;
 	DrawGUI painter = null;
 	
-	String filePath = "";
+	String filePath = "src/icon/icon.png";
 	// set default image to icon
 	public GuiHelper(int x, int y) {
 		PixelTransform pixelTransform = new PixelTransform();
