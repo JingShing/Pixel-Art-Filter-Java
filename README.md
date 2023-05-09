@@ -69,5 +69,9 @@ in ```note/note.md```. You can see how I done during the process.
   * UI layout
   * if running filter button will be unavailable
   * fixed undo button function
+### Ver 0.5.2
+* Improved:
+  * redo & undo in filters
+  * filters now will show the step count
 
 Still working on...
