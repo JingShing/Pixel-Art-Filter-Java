@@ -20,6 +20,7 @@ public class ImageEditor extends JFrame{
     private Filters allImg = new Filters();
     private JLabel imageLabel;
     private JButton backButton;
+    private JButton nextButton;
     private JButton kuwaharaButton;
     private JComboBox<String> scaleComboBox;
     private JButton flameButton;
@@ -27,6 +28,7 @@ public class ImageEditor extends JFrame{
     private JButton unknownButton;
     private JButton loadButton;
     private JButton saveButton;
+    private JLabel frameLabel;
 
     public static void main(String[] args) {
         ImageEditor check = new ImageEditor("");
@@ -47,6 +49,8 @@ public class ImageEditor extends JFrame{
 
         // create gui component
         backButton = new JButton("undo");
+        nextButton = new JButton("redo");
+
         kuwaharaButton = new JButton("Kuwahara");
         String[] scaleComboBoxItems = new String[5];
         for (int i = 0; i < scaleComboBoxItems.length; i++) {
@@ -64,8 +68,11 @@ public class ImageEditor extends JFrame{
         // set gui layout
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(6, 1));
-        buttonPanel.add(backButton);
+        buttonPanel.setLayout(new GridLayout(7, 1));
+        JPanel doPanel = new JPanel(new GridLayout(1,2));
+        doPanel.add(backButton);
+        doPanel.add(nextButton);
+        buttonPanel.add(doPanel);
         JPanel kuwaPanel = new JPanel();
         kuwaPanel.setLayout(new GridLayout(1, 2));
         kuwaPanel.add(kuwaharaButton);
@@ -83,6 +90,11 @@ public class ImageEditor extends JFrame{
         bottomPanel.setLayout(new FlowLayout());
         bottomPanel.add(loadButton);
         bottomPanel.add(saveButton);
+        
+        frameLabel = new JLabel("");
+        setFrameState();
+        buttonPanel.add(frameLabel);
+        
 
         // add gui componet to window
         add(buttonPanel, BorderLayout.WEST);
@@ -93,6 +105,11 @@ public class ImageEditor extends JFrame{
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayImage(allImg.backReturn());
+            }
+        });
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayImage(allImg.nextReturn());
             }
         });
 
@@ -161,6 +178,7 @@ public class ImageEditor extends JFrame{
         if(img == null) return;
         Image image = matToBufferedImage(img);
         imageLabel.setIcon(new ImageIcon(image));
+        setFrameState();
         setButtonActive(true);
     }
     private static BufferedImage matToBufferedImage(Mat mat) {
@@ -188,5 +206,8 @@ public class ImageEditor extends JFrame{
         loadButton.setEnabled(active);
         saveButton.setEnabled(active);
         backButton.setEnabled(active);
+    }
+    public void setFrameState() {
+    	frameLabel.setText(String.format(" Now frame: %d, total: %d", allImg.getNowFrame(), allImg.getFrameLen()));
     }
 }

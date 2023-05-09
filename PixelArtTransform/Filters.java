@@ -3,33 +3,45 @@ package idv.jingshing.pixel.filter;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.ArrayList;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
-import org.opencv.imgcodecs.Imgcodecs;
-
-import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.io.IOException;
 
 public class Filters{
     private ArrayList<Mat> img = new ArrayList<>();
+    private int imgNowPos=0;
+    private int allLen=0;
+    public int getFrameLen() {
+    	return allLen;
+    }
+    public int getNowFrame() {
+    	return imgNowPos;
+    }
     public Mat getNowImg() {
-        if(img.size()==1) return img.get(img.size()-1);
-        return img.get(img.size()-1);
+        return img.get(imgNowPos-1);
     }
     public Mat backReturn() {
-        if(img.size()==1) return getNowImg();
-        img.remove(img.size()-1);
+        if(imgNowPos<=1) return getNowImg();
+        imgNowPos--;
+        return getNowImg();
+    }
+    public Mat nextReturn() {
+        if(imgNowPos>=allLen) return getNowImg();
+        imgNowPos++;
         return getNowImg();
     }
     public void setImg(Mat input) {
         if(img.size()!=0) return;
+        imgNowPos=1; allLen=1;
         img.add(input); return;
+    }
+    public void addImg(Mat input) {
+        if(imgNowPos==img.size()) {
+            img.add(input); imgNowPos++; allLen++;
+        } else {
+            img.set(imgNowPos++, input); allLen=imgNowPos;
+        }
     }
     // for test
     /* 
@@ -100,7 +112,7 @@ public class Filters{
                 else output.put(i, j, data[0]);
             }
         }
-        img.add(output);
+        addImg(output);
         return output;
     }
     
@@ -150,7 +162,7 @@ public class Filters{
                 else output.put(i, j, data[0]);
             }
         }
-        img.add(output);
+        addImg(output);
         return output;
     }
 
@@ -177,7 +189,7 @@ public class Filters{
                 else output.put(i, j, data[0]);
             }
         }
-        img.add(output);
+        addImg(output);
         return output;
     }
     
@@ -214,7 +226,7 @@ public class Filters{
                 output.put(i, j, total);
             }
         }
-        img.add(output);
+        addImg(output);
         return output;
     }
 
@@ -261,7 +273,7 @@ public class Filters{
                 }
             }
         }
-        img.add(output);
+        addImg(output);
         return output;
     }
     private static BufferedImage matToBufferedImage(Mat mat) {
